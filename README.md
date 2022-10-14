@@ -7,35 +7,32 @@
 [![Monitor mode](https://img.shields.io/badge/monitor%20mode-supported-brightgreen.svg)](#)
 [![Frame Injection](https://img.shields.io/badge/frame%20injection-supported-brightgreen.svg)](#)
 [![MESH Mode](https://img.shields.io/badge/mesh%20mode-supported-brightgreen.svg)](#)
-[![GitHub issues](https://img.shields.io/github/issues/aircrack-ng/rtl8188eus.svg)](https://github.com/aircrack-ng/rtl8188eus/issues)
-[![GitHub forks](https://img.shields.io/github/forks/aircrack-ng/rtl8188eus.svg)](https://github.com/aircrack-ng/rtl8188eus/network)
-[![GitHub stars](https://img.shields.io/github/stars/aircrack-ng/rtl8188eus.svg)](https://github.com/aircrack-ng/rtl8188eus/stargazers)
-[![GitHub license](https://img.shields.io/github/license/aircrack-ng/rtl8812au.svg)](https://github.com/aircrack-ng/rtl8188eus/blob/master/LICENSE)<br>
+[![GitHub issues](https://img.shields.io/github/issues/KanuX-14/rtl8188eus.svg)](https://github.com/KanuX-14/rtl8188eus/issues)
+[![GitHub forks](https://img.shields.io/github/forks/KanuX-14/rtl8188eus.svg)](https://github.com/KanuX-14/rtl8188eus/network)
+[![GitHub stars](https://img.shields.io/github/stars/KanuX-14/rtl8188eus.svg)](https://github.com/KanuX-14/rtl8188eus/stargazers)
+[![GitHub license](https://img.shields.io/badge/License-GPL--2.0-informational)](https://github.com/KanuX-14/rtl8188eus/blob/master/LICENSE)<br>
 [![Android](https://img.shields.io/badge/android%20(8)-supported-brightgreen.svg)](#)
 [![aircrack-ng](https://img.shields.io/badge/aircrack--ng-supported-blue.svg)](#)
 
-Trying to find a solution? See [troubleshooting](https://github.com/KanuX-14/rtl8188eus/blob/v5.3.9/TROUBLESHOOTING.md).
+Trying to find a solution? See [troubleshooting](https://github.com/KanuX-14/rtl8188eus/blob/master/TROUBLESHOOTING.md).
 
-## Supports
-
-- Android 7
-- MESH Support
-- Monitor mode
-- Frame injection
-- Up to kernel v5.8+<br>
-... And a bunch of various wifi chipsets
+|   Support         |   Tested  |   Status  |   Description                                     |
+|-------------------|-----------|-----------|---------------------------------------------------|
+|   Android 7+      |   ❌      |   🟡      |   Depends on which kernel version is installed.   |
+|   MESH            |   ❌      |   🟠      |   Not tested yet.                                 |
+|   Monitor Mode    |   ✅      |   🔵      |   Tested and working.                             |
+|   Frame injection |   ✅      |   🔵      |   Tested and working.                             |
+|   Kernel 5.8+     |   ✅      |   🟢      |   Kernel 5.15+ tested.                            |
 
 ## Building
-
-You will need to blacklist another driver in order to use this one.
 
 ##### With the automated script:
 
 |   Package |   Command                                                                                                 |
 |-----------|-----------------------------------------------------------------------------------------------------------|
-|   curl    |   sh -c "$(curl -fsSL https://raw.githubusercontent.com/KanuX-14/rtl8188eus/v5.3.9/scripts/build.sh)"     |
-|   wget    |   sh -c "$(wget -O- https://raw.githubusercontent.com/KanuX-14/rtl8188eus/v5.3.9/scripts/build.sh)"       |
-|   fetch   |   sh -c "$(fetch -o - https://raw.githubusercontent.com/KanuX-14/rtl8188eus/v5.3.9/scripts/build.sh)"     |
+|   curl    |   sh -c "$(curl -fsSL https://raw.githubusercontent.com/KanuX-14/rtl8188eus/master/scripts/build.sh)"     |
+|   wget    |   sh -c "$(wget -O- https://raw.githubusercontent.com/KanuX-14/rtl8188eus/master/scripts/build.sh)"       |
+|   fetch   |   sh -c "$(fetch -o - https://raw.githubusercontent.com/KanuX-14/rtl8188eus/master/scripts/build.sh)"     |
 
 ##### Without the automated script:
 
@@ -57,6 +54,8 @@ It is necessary the usage of kernel headers. Each distribution have a different 
 They can also be manually compiled. See [this](https://www.kernel.org/doc/html/latest/kbuild/modules.html).
 
 #### Compilation:
+
+You will need to blacklist another driver in order to use this one.
 
 ```sh
 git clone --recursive https://github.com/KanuX-14/rtl8188eus.git
