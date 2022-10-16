@@ -96,21 +96,21 @@ Frame injection test may be performed with.<br>
 (after kernel v5.2 scanning is slow, run a scan or simply an airodump-ng first!)
 
 ```sh
-aireplay -9 <interface>
+sudo aireplay-ng -9 <interface>
 ```
 
 ## Disable Monitor mode
 
 Use these steps to disable monitor mode. (not possible if your device's MAC address is added to `unmanaged-devices` variable under "NetworkManager.conf")
 ```sh
-sudo service NetworkManager start
+sudo systemctl start NetworkManager.service
 sudo iw dev <interface> set type managed
 sudo ip link set <interface> up
 ```
 
 If the adapter still refuses to go back, try:
 ```sh
-sudo service NetworkManager restart
+sudo systemctl restart NetworkManager.service
 ```
 
 ## NetworkManager configuration
