@@ -417,7 +417,7 @@ u8 rtw_cfg80211_ch_switch_notify(_adapter *adapter, u8 ch, u8 bw, u8 offset, u8 
 	if (ret != _SUCCESS)
 		goto exit;
 		
-	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 2))
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0))
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef);
 	#else
 	cfg80211_ch_switch_notify(adapter->pnetdev, &chdef, 0);
@@ -4885,7 +4885,7 @@ static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *nd
 	return ret;
 }
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 2))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0))
 static int cfg80211_rtw_stop_ap(struct wiphy *wiphy, struct net_device *ndev)
 #else
 static int cfg80211_rtw_stop_ap(struct wiphy *wiphy, struct net_device *ndev, unsigned int link_id)
@@ -9647,7 +9647,7 @@ void rtw_wdev_unregister(struct wireless_dev *wdev)
 	rtw_cfg80211_indicate_scan_done(adapter, _TRUE);
 
 	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)) || defined(COMPAT_KERNEL_RELEASE)
-	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 2))
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0))
 	if (wdev->current_bss) {
 	#elif (LINUX_VERSION_CODE > KERNEL_VERSION(6, 0, 0))
 	if (wdev->links[0].client.current_bss) {
