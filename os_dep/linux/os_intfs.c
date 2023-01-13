@@ -1173,7 +1173,8 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *addr)
 	int ret = -1;
 
 	/* only the net_device is in down state to permit modifying mac addr */
-	if ((pnetdev->flags & IFF_UP) == _TRUE) {
+	if ((pnetdev->flags & IFF_UP) == _TRUE)
+	{
 		RTW_INFO(FUNC_ADPT_FMT": The net_device's is not in down state\n"
 			 , FUNC_ADPT_ARG(padapter));
 
@@ -1181,28 +1182,25 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *addr)
 	}
 
 	/* if the net_device is linked, it's not permit to modify mac addr */
-	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) ||
-	    check_fwstate(pmlmepriv, _FW_LINKED) ||
-	    check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)) {
-		RTW_INFO(FUNC_ADPT_FMT": The net_device's is not idle currently\n"
-			 , FUNC_ADPT_ARG(padapter));
-
+	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) || check_fwstate(pmlmepriv, _FW_LINKED) || check_fwstate(pmlmepriv, _FW_UNDER_SURVEY))
+	{
+		RTW_INFO(FUNC_ADPT_FMT": The net_device's is not idle currently\n", FUNC_ADPT_ARG(padapter));
 		return ret;
 	}
 
 	/* check whether the input mac address is valid to permit modifying mac addr */
-	if (rtw_check_invalid_mac_address(sa->sa_data, _FALSE) == _TRUE) {
-		RTW_INFO(FUNC_ADPT_FMT": Invalid Mac Addr for "MAC_FMT"\n"
-			 , FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
-
+	if (rtw_check_invalid_mac_address(sa->sa_data, _FALSE) == _TRUE)
+	{
+		RTW_INFO(FUNC_ADPT_FMT": Invalid Mac Addr for "MAC_FMT"\n", FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
 		return ret;
 	}
 
 	_rtw_memcpy(adapter_mac_addr(padapter), sa->sa_data, ETH_ALEN); /* set mac addr to adapter */
-	_rtw_memcpy(pnetdev->dev_addr, sa->sa_data, ETH_ALEN); /* set mac addr to net_device */
+	_rtw_memcpy((void*)pnetdev->dev_addr, sa->sa_data, ETH_ALEN); /* set mac addr to net_device */
 
 #if 0
-	if (rtw_is_hw_init_completed(padapter)) {
+	if (rtw_is_hw_init_completed(padapter))
+	{
 		rtw_ps_deny(padapter, PS_DENY_IOCTL);
 		LeaveAllPowerSaveModeDirect(padapter); /* leave PS mode for guaranteeing to access hw register successfully */
 
@@ -1225,11 +1223,9 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *addr)
 	rtw_ps_deny_cancel(padapter, PS_DENY_IOCTL);
 #endif
 
-	RTW_INFO(FUNC_ADPT_FMT": Set Mac Addr to "MAC_FMT" Successfully\n"
-		 , FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
+	RTW_INFO(FUNC_ADPT_FMT": Set Mac Addr to "MAC_FMT" Successfully\n", FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
 
 	ret = 0;
-
 	return ret;
 }
 
@@ -1622,7 +1618,8 @@ int rtw_os_ndev_register(_adapter *adapter, const char *name)
 #endif /* CONFIG_RTW_NAPI */
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (rtw_cfg80211_ndev_res_register(adapter) != _SUCCESS) {
+	if (rtw_cfg80211_ndev_res_register(adapter) != _SUCCESS)
+	{
 		rtw_warn_on(1);
 		ret = _FAIL;
 		goto exit;
@@ -1632,7 +1629,7 @@ int rtw_os_ndev_register(_adapter *adapter, const char *name)
 	/* alloc netdev name */
 	rtw_init_netdev_name(ndev, name);
 
-	_rtw_memcpy(ndev->dev_addr, adapter_mac_addr(adapter), ETH_ALEN);
+	_rtw_memcpy((void*)ndev->dev_addr, adapter_mac_addr(adapter), ETH_ALEN);
 #if defined(CONFIG_NET_NS)
     dev_net_set(ndev, wiphy_net(adapter_to_wiphy(adapter)));
 #endif //defined(CONFIG_NET_NS)
@@ -1650,7 +1647,8 @@ int rtw_os_ndev_register(_adapter *adapter, const char *name)
 		RTW_INFO(FUNC_NDEV_FMT" if%d Failed!\n", FUNC_NDEV_ARG(ndev), (adapter->iface_id + 1));
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (ret != _SUCCESS) {
+	if (ret != _SUCCESS)
+	{
 		rtw_cfg80211_ndev_res_unregister(adapter);
 		#if !defined(RTW_SINGLE_WIPHY)
 		rtw_wiphy_unregister(adapter_to_wiphy(adapter));

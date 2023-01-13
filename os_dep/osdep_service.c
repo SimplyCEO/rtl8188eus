@@ -2428,7 +2428,8 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	rereg_priv = &padapter->rereg_nd_name_priv;
 
 	/* free the old_pnetdev */
-	if (rereg_priv->old_pnetdev) {
+	if (rereg_priv->old_pnetdev)
+	{
 		free_netdev(rereg_priv->old_pnetdev);
 		rereg_priv->old_pnetdev = NULL;
 	}
@@ -2443,25 +2444,20 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	rereg_priv->old_pnetdev = cur_pnetdev;
 
 	pnetdev = rtw_init_netdev(padapter);
-	if (!pnetdev)  {
-		ret = -1;
-		goto error;
-	}
+	if (!pnetdev) { ret = -1; goto error; }
 
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(adapter_to_dvobj(padapter)));
 
 	rtw_init_netdev_name(pnetdev, ifname);
 
-	_rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
+	_rtw_memcpy((void*)pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
 
 	if (rtnl_lock_needed)
 		ret = register_netdev(pnetdev);
 	else
 		ret = register_netdevice(pnetdev);
 
-	if (ret != 0) {
-		goto error;
-	}
+	if (ret != 0) { goto error; }
 
 	return 0;
 
