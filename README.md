@@ -45,7 +45,6 @@ As you wish to do all by yourself, the dependency list is right under:
 |   bc          |   https://ftp.gnu.org/gnu/bc/                     |
 |   gawk        |   https://ftp.gnu.org/gnu/gawk/                   |
 |   gcc         |   https://ftp.gnu.org/gnu/gcc/                    |
-|   git         |   https://github.com/git/git                      |
 |   make        |   https://ftp.gnu.org/gnu/make/                   |
 |   net-tools   |   https://sourceforge.net/projects/net-tools/     |
 |   zenity      |   https://gitlab.gnome.org/GNOME/zenity           |
@@ -53,28 +52,30 @@ As you wish to do all by yourself, the dependency list is right under:
 It is necessary the usage of kernel headers. Each distribution have a different package.<br>
 They can also be manually compiled. See [this](https://www.kernel.org/doc/html/latest/kbuild/modules.html).
 
+**Remember to run the commands as [root](https://en.wikipedia.org/wiki/Superuser).**
+
+Root can be accessed by doing `su` or `sudo su` command.
+
 #### Compilation:
 
 You will need to blacklist another driver in order to use this one.
-
 ```sh
-git clone --recursive https://gitlab.com/KanuX/rtl8188eus.git
-cd rtl8188eus
-printf "blacklist r8188eu\n" | sudo tee "/etc/modprobe.d/realtek.conf"
-sudo rmmod r8188eu
-make && sudo make install clean
-sudo modprobe 8188eu
+wget -O rtl8188eus.tar.gz https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz
+cd rtl8188eus-master
+printf "blacklist r8188eu\n" > /etc/modprobe.d/realtek.conf
+rmmod r8188eu
+make && make install clean
+modprobe 8188eu
 ```
 
 #### The toggle-monitor script:
 
 With this, the toggle script will appear in your DE's menu. Under `Accessories` and `Internet`.
-
 ```sh
-sudo cp toggle-monitor.sh /usr/local/bin/toggle-monitor
-sudo chown $USER:$USER /usr/local/bin/toggle-monitor
-sudo chmod +x /usr/local/bin/toggle-monitor
-sudo cp rtl8188eus-toggle-monitor.desktop /usr/share/applications
+cp toggle-monitor.sh /usr/local/bin/toggle-monitor
+chown $USER:$USER /usr/local/bin/toggle-monitor
+chmod +x /usr/local/bin/toggle-monitor
+cp rtl8188eus-toggle-monitor.desktop /usr/share/applications
 ```
 
 ## Monitor mode
@@ -86,32 +87,48 @@ ip address
 ```
 
 Use these steps to enter monitor mode.
+
+|   Init System   |   Command                                   |
+|-----------------|---------------------------------------------|
+|   OpenRC        |   rc-service NetworkManager stop            |
+|   SystemD       |   systemctl stop NetworkManager.service     |
+
 ```sh
-sudo airmon-ng check kill
-sudo ip link set <interface> down
-sudo iw dev <interface> set type monitor
+ip link set <interface> down
+iw dev <interface> set type monitor
+ip link set <interface> name <new_interface_name> # optional
 ```
+Note: `new_interface_name` can be anything such as `[wlan0mon, mon0, monitor0]`.
 
 Frame injection test may be performed with.<br>
 (after kernel v5.2 scanning is slow, run a scan or simply an airodump-ng first!)
 
 ```sh
-sudo aireplay-ng -9 <interface>
+aireplay-ng -9 <interface>
 ```
 
 ## Disable Monitor mode
 
 Use these steps to disable monitor mode. (not possible if your device's MAC address is added to `unmanaged-devices` variable under "NetworkManager.conf")
+
+|   Init System   |   Command                                   |
+|-----------------|---------------------------------------------|
+|   OpenRC        |   rc-service NetworkManager start           |
+|   SystemD       |   systemctl start NetworkManager.service    |
+
 ```sh
-sudo systemctl start NetworkManager.service
-sudo iw dev <interface> set type managed
-sudo ip link set <interface> up
+iw dev <interface> set type managed
+ip link set <interface> name <old_interface_name> # optional
+ip link set <interface> up
 ```
+Note: Most of the cases the `old_interface_name` is wlan0.
 
 If the adapter still refuses to go back, try:
-```sh
-sudo systemctl restart NetworkManager.service
-```
+
+|   Init System   |   Command                                     |
+|-----------------|-----------------------------------------------|
+|   OpenRC        |   rc-service NetworkManager restart           |
+|   SystemD       |   systemctl restart NetworkManager.service    |
 
 ## NetworkManager configuration
 
@@ -133,12 +150,13 @@ wifi.powersave=0
 plugins=keyfile
 
 [keyfile]
-unmanaged-devices=A0:B1:C2:D3:E4:F5 #Your device's MAC address here
+unmanaged-devices=A0:B1:C2:D3:E4:F5
 ```
 
 # Credits
 Realtek       - https://www.realtek.com<br>
 Alfa Networks - https://www.alfa.com.tw<br>
-aircrack-ng.  - https://www.aircrack-ng.org<br>
+aircrack-ng  - https://www.aircrack-ng.org<br>
+Project contributors - https://gitlab.com/KanuX/rtl8188eus/-/graphs/master?ref_type=heads<br>
 
-And all those who may be using or contributing to it of anykind. Thanks!<br>
+And all those who are using, requesting support, or teaching. Thanks!<br>
