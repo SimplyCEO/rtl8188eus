@@ -59,8 +59,15 @@ Root can be accessed by doing `su` or `sudo su` command.
 #### Compilation:
 
 You will need to blacklist another driver in order to use this one.
+
+|   Package   |   URL                                                                                                                       |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------|
+|   curl      |   curl -L https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz --output rtl8188eus-master.tar.gz   |
+|   wget      |   wget https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz                                        |
+|   fetch     |   fetch https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz                                       |
+
 ```sh
-wget -O rtl8188eus.tar.gz https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz
+tar -xvf rtl8188eus-master.tar.gz
 cd rtl8188eus-master
 printf "blacklist r8188eu\n" > /etc/modprobe.d/realtek.conf
 rmmod r8188eu
