@@ -8,8 +8,8 @@ Building
 |   bc          |   https://ftp.gnu.org/gnu/bc/                     |
 |   gawk        |   https://ftp.gnu.org/gnu/gawk/                   |
 |   gcc         |   https://ftp.gnu.org/gnu/gcc/                    |
-|   make        |   https://ftp.gnu.org/gnu/make/                   |
-|   net-tools   |   https://sourceforge.net/projects/net-tools/     |
+|   make        |   https://ftp.gnu.org/gnu/tar/                    |
+|   tar         |   https://sourceforge.net/projects/net-tools/     |
 |   zenity      |   https://gitlab.gnome.org/GNOME/zenity           |
 
 <b>With the automated script:</b>

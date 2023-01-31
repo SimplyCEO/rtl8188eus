@@ -29,7 +29,7 @@ fi
 # Check if the repository already exists
 if ! [ -d ../rtl8188eus ]; then
 	if ! [ -d ${CURRENT_HOME}/rtl8188eus ]; then
-		git clone --recursive https://github.com/KanuX-14/rtl8188eus.git
+		git clone --recursive https://gitlab.com/KanuX/rtl8188eus.git
 	else
 		printf "${YELLOW}""[!] Repository already exists.""${RESET_COLOUR}""\n"
 	fi
@@ -50,11 +50,11 @@ fi
 
 # Check the package manager.
 if type dpkg &>/dev/null; then
-	sudo apt-get update && sudo apt-get install gawk net-tools git gcc bc make linux-headers-$(uname -r) zenity -y
+	sudo apt-get update && sudo apt-get install gawk tar git gcc bc make linux-headers-$(uname -r) zenity -y
 elif type pacman &>/dev/null; then
-	sudo pacman -S --needed --noconfirm gawk net-tools git gcc bc make linux-headers zenity
+	sudo pacman -S --needed --noconfirm gawk tar git gcc bc make linux-headers zenity
 elif type dnf &>/dev/null; then
-	sudo dnf install -y gawk net-tools git gcc bc make kernel-devel zenity
+	sudo dnf install -y gawk tar git gcc bc make kernel-devel zenity
 else
 	printf "${GREEN}""Consider installing the kernel headers by yourself.""${RESET_COLOUR}""\n"
 fi
