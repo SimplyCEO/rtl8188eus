@@ -14,7 +14,7 @@
 [![Android](https://img.shields.io/badge/android%20(8)-supported-brightgreen.svg)](#)
 [![aircrack-ng](https://img.shields.io/badge/aircrack--ng-supported-blue.svg)](#)
 
-Trying to find a solution? See [troubleshooting](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/TROUBLESHOOTING.md).
+Trying to find a solution? See [troubleshooting](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/TROUBLESHOOTING.md).
 
 |   Support         |   Tested  |   Status  |   Description                                     |
 |-------------------|-----------|-----------|---------------------------------------------------|
@@ -26,139 +26,7 @@ Trying to find a solution? See [troubleshooting](https://gitlab.com/KanuX/rtl818
 
 ## Building
 
-##### With the automated script:
-
-|   Package |   Command                                                                                                 |
-|-----------|-----------------------------------------------------------------------------------------------------------|
-|   curl    |   sh -c "$(curl -fsSL https://gitlab.com/KanuX/rtl8188eus/-/raw/master/scripts/build.sh)"     |
-|   wget    |   sh -c "$(wget -O- https://gitlab.com/KanuX/rtl8188eus/-/raw/master/scripts/build.sh)"       |
-|   fetch   |   sh -c "$(fetch -o - https://gitlab.com/KanuX/rtl8188eus/-/raw/master/scripts/build.sh)"     |
-
-##### Without the automated script:
-
-Keep in mind that the script checks your system and install the dependencies.<br>
-It also checks whether the file have or not have a variable inside.<br>
-As you wish to do all by yourself, the dependency list is right under:
-
-|   Package     |   URL                                             |
-|---------------|---------------------------------------------------|
-|   bc          |   https://ftp.gnu.org/gnu/bc/                     |
-|   gawk        |   https://ftp.gnu.org/gnu/gawk/                   |
-|   gcc         |   https://ftp.gnu.org/gnu/gcc/                    |
-|   make        |   https://ftp.gnu.org/gnu/make/                   |
-|   net-tools   |   https://sourceforge.net/projects/net-tools/     |
-|   zenity      |   https://gitlab.gnome.org/GNOME/zenity           |
-
-It is necessary the usage of kernel headers. Each distribution have a different package.<br>
-They can also be manually compiled. See [this](https://www.kernel.org/doc/html/latest/kbuild/modules.html).
-
-**Remember to run the commands as [root](https://en.wikipedia.org/wiki/Superuser).**
-
-Root can be accessed by doing `su` or `sudo su` command.
-
-#### Compilation:
-
-You will need to blacklist another driver in order to use this one.
-
-|   Package   |   URL                                                                                                                       |
-|-------------|-----------------------------------------------------------------------------------------------------------------------------|
-|   curl      |   curl -L https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz --output rtl8188eus-master.tar.gz   |
-|   wget      |   wget https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz                                        |
-|   fetch     |   fetch https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz                                       |
-
-```sh
-tar -xvf rtl8188eus-master.tar.gz
-cd rtl8188eus-master
-printf "blacklist r8188eu\n" > /etc/modprobe.d/realtek.conf
-rmmod r8188eu
-make && make install clean
-modprobe 8188eu
-```
-
-#### The toggle-monitor script:
-
-With this, the toggle script will appear in your DE's menu. Under `Accessories` and `Internet`.
-```sh
-cp toggle-monitor.sh /usr/local/bin/toggle-monitor
-chown $USER:$USER /usr/local/bin/toggle-monitor
-chmod +x /usr/local/bin/toggle-monitor
-cp rtl8188eus-toggle-monitor.desktop /usr/share/applications
-```
-
-## Monitor mode
-
-Interface can be both identified as `wlan0` or `wlp1s0`. It may depend on how much wireless devices are connected.<br>
-Use the command to list all the available interfaces:
-```sh
-ip address
-```
-
-Use these steps to enter monitor mode.
-
-|   Init System   |   Command                                   |
-|-----------------|---------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager stop            |
-|   SystemD       |   systemctl stop NetworkManager.service     |
-
-```sh
-ip link set <interface> down
-iw dev <interface> set type monitor
-ip link set <interface> name <new_interface_name> # optional
-```
-Note: `new_interface_name` can be anything such as `[wlan0mon, mon0, monitor0]`.
-
-Frame injection test may be performed with.<br>
-(after kernel v5.2 scanning is slow, run a scan or simply an airodump-ng first!)
-
-```sh
-aireplay-ng -9 <interface>
-```
-
-## Disable Monitor mode
-
-Use these steps to disable monitor mode. (not possible if your device's MAC address is added to `unmanaged-devices` variable under "NetworkManager.conf")
-
-|   Init System   |   Command                                   |
-|-----------------|---------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager start           |
-|   SystemD       |   systemctl start NetworkManager.service    |
-
-```sh
-iw dev <interface> set type managed
-ip link set <interface> name <old_interface_name> # optional
-ip link set <interface> up
-```
-Note: Most of the cases the `old_interface_name` is wlan0.
-
-If the adapter still refuses to go back, try:
-
-|   Init System   |   Command                                     |
-|-----------------|-----------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager restart           |
-|   SystemD       |   systemctl restart NetworkManager.service    |
-
-## NetworkManager configuration
-
-Copy "NetworkManager.conf" to "NetworkManager.conf.bak" to create a backup.<br>
-Add these lines below to "NetworkManager.conf" and ADD YOUR ADAPTER MAC below `[keyfile]`.<br>
-This will make the Network-Manager ignore the device, and therefore don't cause problems.
-
-```sh
-[device]
-wifi.scan-rand-mac-address=no
-
-[ifupdown]
-managed=false
-
-[connection]
-wifi.powersave=0
-
-[main]
-plugins=keyfile
-
-[keyfile]
-unmanaged-devices=A0:B1:C2:D3:E4:F5
-```
+All the instructions are being moved to the [Documentation](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/BUILDING.md) or the [Wiki](https://gitlab.com/KanuX/rtl8188eus/-/wikis/home).
 
 # Credits
 Realtek       - https://www.realtek.com<br>

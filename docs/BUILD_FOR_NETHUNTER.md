@@ -10,8 +10,9 @@ make modules_install INSTALL_MOD_PATH=../
 
 ```
 cd ../
-git clone https://github.com/aircrack-ng/rtl8188eus -b v5.3.9
-cd rtl8188eus
+curl -L https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz --output rtl8188eus-master.tar.gz
+tar -xvf rtl8188eus-master.tar.gz
+cd rtl8188eus-master/
 ```
 
 That command places this driver behind your kernel source directory (RECOMMENDED).
@@ -25,7 +26,7 @@ export CROSS_COMPILE=../toolchain/toolchain64/bin/aarch64-linux-android-
 export KBUILD_KVER=3.10.73-NetHunter-something
 ```
 
-arm64 is the device architecture. 
+arm64 is the device architecture.
 CROSS_COMPILE is your toolchain directory.
 KBUILD_KVER is your kernel build version, you can search for it in ../lib/modules (the place of your modules_install when you build kernel headers).
 
@@ -43,4 +44,3 @@ su
 cd /system/lib/modules
 insmod 8188eu.ko
 ```
-
