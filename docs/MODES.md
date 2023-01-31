@@ -52,4 +52,4 @@ If the adapter still refuses to go back, try:
 |   OpenRC        |   rc-service NetworkManager restart           |
 |   SystemD       |   systemctl restart NetworkManager.service    |
 
-[Building](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/BUILDING.md) | [NetworkManager configuration](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/NETWORKMANAGER.md)
+[Building](./BUILDING.md) | [NetworkManager configuration](./NETWORKMANAGER.md)

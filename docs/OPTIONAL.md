@@ -9,4 +9,4 @@ chmod +x /usr/local/bin/toggle-monitor
 cp rtl8188eus-toggle-monitor.desktop /usr/share/applications
 ```
 
-[NetworkManager configuration](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/NETWORKMANAGER.md) | [Troubleshooting](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/TROUBLESHOOTING.md)
+[NetworkManager configuration](./NETWORKMANAGER.md) | [Troubleshooting](./TROUBLESHOOTING.md)

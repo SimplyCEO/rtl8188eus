@@ -14,7 +14,7 @@
 [![Android](https://img.shields.io/badge/android%20(8)-supported-brightgreen.svg)](#)
 [![aircrack-ng](https://img.shields.io/badge/aircrack--ng-supported-blue.svg)](#)
 
-Trying to find a solution? See [troubleshooting](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/TROUBLESHOOTING.md).
+Trying to find a solution? See [troubleshooting](./docs/TROUBLESHOOTING.md).
 
 |   Support         |   Tested  |   Status  |   Description                                     |
 |-------------------|-----------|-----------|---------------------------------------------------|
@@ -26,7 +26,7 @@ Trying to find a solution? See [troubleshooting](https://gitlab.com/KanuX/rtl818
 
 ## Building
 
-All the instructions are being moved to the [Documentation](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/BUILDING.md) or the [Wiki](https://gitlab.com/KanuX/rtl8188eus/-/wikis/home).
+All the instructions are being moved to the [Documentation](./docs/BUILDING.md) or the [Wiki](https://gitlab.com/KanuX/rtl8188eus/-/wikis/home).
 
 # Credits
 Realtek       - https://www.realtek.com<br>

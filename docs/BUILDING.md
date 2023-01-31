@@ -53,4 +53,4 @@ modprobe -r r8188eu
 modprobe 8188eu
 ```
 
-[Main page](https://gitlab.com/KanuX/rtl8188eus) | [Enabling/Disabling monitor mode](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/MODES.md)
+[Main page](../../..) | [Enabling/Disabling monitor mode](./MODES.md)

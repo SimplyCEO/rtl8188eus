@@ -22,4 +22,4 @@ plugins=keyfile
 unmanaged-devices=A0:B1:C2:D3:E4:F5
 ```
 
-[Enabling/Disabling monitor mode](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/MODES.md) | [Scripts](https://gitlab.com/KanuX/rtl8188eus/-/blob/master/docs/OPTIONAL.md)
+[Enabling/Disabling monitor mode](./MODES.md) | [Scripts](./OPTIONAL.md)
