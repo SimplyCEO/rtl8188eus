@@ -1,0 +1,13 @@
+# Build
+build/
+
+# Raw build
+*.mod
+*.mod.c
+*.o
+.*.cmd
+*.ko
+Module.symvers
+Module.markers
+modules.order
+.tmp_versions
