@@ -75,9 +75,9 @@ _iqk_page_switch(
 		void			*dm_void)
 {
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
-	if (dm->support_ic_type == ODM_RTL8821C)	
+	if (dm->support_ic_type == ODM_RTL8821C)
 		odm_write_4byte(dm, 0x1b00, 0xf8000008);
-	else	
+	else
 		odm_write_4byte(dm, 0x1b00, 0xf800000a);
 }
 
@@ -119,7 +119,7 @@ u32 halrf_psd_log2base(u32 val)
 	val_fractiond_b = table_fraction[tindex];
 
 	result = val_integerd_b * 100 - val_fractiond_b;
-	
+
 	return result;
 
 
@@ -134,7 +134,7 @@ void phydm_get_iqk_cfir(
 {
 	struct dm_struct	*dm = (struct dm_struct *)dm_void;
 	struct dm_iqk_info	*iqk_info = &dm->IQK_info;
-	
+
 	u8 i, ch;
 	u32 tmp;
 
@@ -171,7 +171,7 @@ halrf_iqk_xym_enable(
 	else
 		iqk_info->xym_read = true;
 
-	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s %s\n", "xym_read = ", (iqk_info->xym_read ? "true": "false"));	
+	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s %s\n", "xym_read = ", (iqk_info->xym_read ? "true": "false"));
 }
 
 void
@@ -182,7 +182,7 @@ halrf_iqk_xym_read(
  )
 {
 	struct dm_struct	*dm = (struct dm_struct *)dm_void;
-	struct dm_iqk_info *iqk_info = &dm->IQK_info;	
+	struct dm_iqk_info *iqk_info = &dm->IQK_info;
 	u8 i, start, num;
 	u32 tmp1, tmp2;
 
@@ -192,14 +192,14 @@ halrf_iqk_xym_read(
 	if (*dm->band_width == 0) {
 		start = 3;
 		num = 4;
-	}else if (*dm->band_width == 1) { 
+	}else if (*dm->band_width == 1) {
 		start = 2;
 		num = 6;
 	}else {
 		start = 0;
   		num = 10;
  	}
-	
+
 	odm_write_4byte(dm, 0x1b00, 0xf8000008);
  	tmp1 =  odm_read_4byte(dm, 0x1b1c);
 	odm_write_4byte(dm, 0x1b1c, 0xa2193c32);
@@ -218,28 +218,28 @@ halrf_iqk_xym_read(
 	   				iqk_info->rx_xym[path][i] = odm_read_4byte(dm, 0x1b38);
 				}
 			break;
-			case 1:		
+			case 1:
 				for (i = 0; i < num ;i++) {
 	   				odm_write_4byte(dm, 0x1b14, 0xe6+start+i);
 	   				odm_write_4byte(dm, 0x1b14, 0x0);
 	   				iqk_info->tx_xym[path][i] = odm_read_4byte(dm, 0x1b38);
 				}
 			break;
-			case 2:		
+			case 2:
 				for (i = 0; i < 6 ;i++) {
 	   				odm_write_4byte(dm, 0x1b14, 0xe0+i);
 	   				odm_write_4byte(dm, 0x1b14, 0x0);
 	   				iqk_info->gs1_xym[path][i] = odm_read_4byte(dm, 0x1b38);
 				}
 			break;
-			case 3:		
+			case 3:
 				for (i = 0; i < 6 ;i++) {
 	   				odm_write_4byte(dm, 0x1b14, 0xe0+i);
 	   				odm_write_4byte(dm, 0x1b14, 0x0);
 	   				iqk_info->gs2_xym[path][i] = odm_read_4byte(dm, 0x1b38);
 	  		}
-			break;			
-			case 4:		
+			break;
+			case 4:
 				for (i = 0; i < 6 ;i++) {
 	   				odm_write_4byte(dm, 0x1b14, 0xe0+i);
 	   				odm_write_4byte(dm, 0x1b14, 0x0);
@@ -262,8 +262,8 @@ void halrf_iqk_xym_show(
 	u8 xym_type /*0: rx_sym; 1: tx_xym; 2:gs1_xym; 3:gs2_sym; 4: rxk1_xym*/
  )
 {
-	u8 num, path, path_num, i;		
-	struct dm_iqk_info *iqk_info = &dm->IQK_info;	
+	u8 num, path, path_num, i;
+	struct dm_iqk_info *iqk_info = &dm->IQK_info;
 
 	if (dm->rf_type ==RF_1T1R)
 		path_num = 0x1;
@@ -278,7 +278,7 @@ void halrf_iqk_xym_show(
 		num = 6;
 	else
 		num = 10;
-		
+
 	for (path = 0; path < path_num; path ++) {
 		switch (xym_type){
 		case 0:
@@ -301,7 +301,7 @@ void halrf_iqk_xym_show(
 				PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s %-2d: 0x%x\n",
 					(path == 0) ? "PATH A GS2-XYM ": "PATH B GS2-XYM", i, iqk_info->gs2_xym[path][i]);
 			break;
-		case 4:			
+		case 4:
 			for (i = 0 ; i < 6; i ++)
 				PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s %-2d: 0x%x\n",
 					(path == 0) ? "PATH A RXK1-XYM ": "PATH B RXK1-XYM", i, iqk_info->rxk1_xym[path][i]);
@@ -339,7 +339,7 @@ void halrf_iqk_info_dump(
 {
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
 	u32 used = *_used;
-	u32 out_len = *_out_len;	
+	u32 out_len = *_out_len;
 	u8 path, num, i;
 
 	u8 rf_path, j, reload_iqk = 0;
@@ -352,7 +352,7 @@ void halrf_iqk_info_dump(
 		       "%-20s\n", "% IQK Info %");
 	PDM_SNPF(out_len, used, output + used, out_len - used,
 		       "%-20s\n",
-		       (dm->fw_offload_ability & PHYDM_RF_IQK_OFFLOAD) ? "FW-IQK" : "Driver-IQK");	
+		       (dm->fw_offload_ability & PHYDM_RF_IQK_OFFLOAD) ? "FW-IQK" : "Driver-IQK");
 
 	reload_iqk = (u8)odm_get_bb_reg(dm, 0x1bf0, BIT(16));
 	PDM_SNPF(out_len, used, output + used, out_len - used,
@@ -400,7 +400,7 @@ void halrf_iqk_info_dump(
 	PDM_SNPF(out_len, used, output + used, out_len - used,
 				"%-20s: %llu %s\n",
 				"progressing_time", dm->rf_calibrate_info.iqk_total_progressing_time, "(ms)");
-		
+
 	tmp = odm_read_4byte(dm, 0x1bf0);
 	for(rf_path = RF_PATH_A; rf_path <= RF_PATH_B; rf_path++)
 		for(j = 0; j < 2; j++)
@@ -414,7 +414,7 @@ void halrf_iqk_info_dump(
 	PDM_SNPF(out_len, used, output + used, out_len - used,
 				"%-20s: %s\n",
 				"PATH_A-Rx result", (iqk_result[0][RF_PATH_A][1]) ?  "Fail" : "Pass");
-#if (RTL8822B_SUPPORT == 1) 
+#if (RTL8822B_SUPPORT == 1)
 	PDM_SNPF(out_len, used, output + used, out_len - used,
 				"%-20s: %s\n",
 				"PATH_B-Tx result", (iqk_result[0][RF_PATH_B][0]) ?  "Fail" : "Pass");
@@ -525,7 +525,7 @@ void halrf_iqk_dbg(void	*dm_void)
 	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "%-20s: %llu %s\n",
 				"progressing_time", dm->rf_calibrate_info.iqk_progressing_time, "(ms)");
 
-	
+
 
 
 	tmp = odm_read_4byte(dm, 0x1bf0);
@@ -539,8 +539,8 @@ void halrf_iqk_dbg(void	*dm_void)
 				"PATH_A-Tx result", (iqk_result[0][RF_PATH_A][0]) ?  "Fail" : "Pass");
 	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "%-20s: %s\n",
 				"PATH_A-Rx result", (iqk_result[0][RF_PATH_A][1]) ?  "Fail" : "Pass");
-#if (RTL8822B_SUPPORT == 1) 
-	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "%-20s: %s\n",		
+#if (RTL8822B_SUPPORT == 1)
+	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "%-20s: %s\n",
 				"PATH_B-Tx result", (iqk_result[0][RF_PATH_B][0]) ?  "Fail" : "Pass");
 	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "%-20s: %s\n",
 				"PATH_B-Rx result", (iqk_result[0][RF_PATH_B][1]) ?  "Fail" : "Pass");
@@ -563,7 +563,7 @@ halrf_iqk_dbg_cfir_backup(struct dm_struct *dm)
 	struct dm_iqk_info *iqk_info = &dm->IQK_info;
 	u8	path, idx, i;
 
-	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s\n", "backup TX/RX CFIR");	
+	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s\n", "backup TX/RX CFIR");
 
 	for (path = 0; path < 2; path ++) {
 		for (idx = 0; idx < 2; idx++) {
@@ -684,7 +684,7 @@ halrf_iqk_dbg_cfir_backup_show(struct dm_struct *dm)
 	struct dm_iqk_info *iqk_info = &dm->IQK_info;
 	u8	path, idx, i;
 
-	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s\n", "backup TX/RX CFIR");	
+	PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "[IQK]%-20s\n", "backup TX/RX CFIR");
 
 	for (path = 0; path < 2; path ++) {
 		for (idx = 0; idx < 2; idx++) {
@@ -735,7 +735,7 @@ void halrf_iqk_debug(
 {
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
 	struct dm_iqk_info	*iqk_info = &dm->IQK_info;
-	
+
 	/*dm_value[0]=0x0: backup from SRAM & show*/
 	/*dm_value[0]=0x1: write backup CFIR to SRAM*/
 	/*dm_value[0]=0x2: reload default CFIR to SRAM*/
@@ -743,9 +743,9 @@ void halrf_iqk_debug(
 	/*dm_value[0]=0x10: write backup CFIR real part*/
 	/*--> dm_value[1]:path, dm_value[2]:tx/rx, dm_value[3]:index, dm_value[4]:data*/
 	/*dm_value[0]=0x11: write backup CFIR imag*/
-	/*--> dm_value[1]:path, dm_value[2]:tx/rx, dm_value[3]:index, dm_value[4]:data*/	
+	/*--> dm_value[1]:path, dm_value[2]:tx/rx, dm_value[3]:index, dm_value[4]:data*/
 	/*dm_value[0]=0x20 :xym_read enable*/
-	/*--> dm_value[1]:0:disable, 1:enable*/ 
+	/*--> dm_value[1]:0:disable, 1:enable*/
 	/*if dm_value[0]=0x20 = enable, */
 	/*0x1:show rx_sym; 0x2: tx_xym; 0x3:gs1_xym; 0x4:gs2_sym; 0x5:rxk1_xym*/
 
@@ -801,7 +801,7 @@ halrf_segment_iqk_trigger(
 	struct dm_iqk_info		*iqk_info = &dm->IQK_info;
 	struct _hal_rf_				*rf = &dm->rf_table;
 	u64 start_time;
-	
+
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN))
 	if (odm_check_power_status(dm) == false)
 		return;
@@ -873,7 +873,7 @@ u8 halrf_match_iqk_version(void	*dm_void)
 
 	odm_move_memory(dm, temp, (PVOID)(HALRF_IQK_VER), sizeof(temp));
 	PHYDM_SSCANF(temp + 2, DCMD_HEX, &iqk_version);
-	
+
 	if (dm->support_ic_type == ODM_RTL8822B) {
 		if ((iqk_version >= 0x24) && (odm_get_hw_img_version(dm) >= 72))
 			return 1;
@@ -964,12 +964,12 @@ halrf_support_ability_debug(
 	u32 out_len = *_out_len;
 	u8	i;
 
-	for (i = 0; i < 5; i++) {
-		if (input[i + 1]) {
-			PHYDM_SSCANF(input[i + 1], DCMD_DECIMAL, &dm_value[i]);
-		}
+	for (i = 0; i < 5; i++)
+	{
+		if (strlen(input[i+1])!=0)
+			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &dm_value[i]);
 	}
-	
+
 	PDM_SNPF(out_len, used, output + used, out_len - used, "\n%s\n",
 		       "================================");
 	if (dm_value[0] == 100) {
@@ -993,7 +993,7 @@ halrf_support_ability_debug(
 			       "04. (( %s ))HAL_RF_TXGAPK\n",
 			       ((rf->rf_supportability & HAL_RF_TXGAPK) ? ("V") : (".")));
 		PDM_SNPF(out_len, used, output + used, out_len - used,
-			       "%s\n", "================================");		
+			       "%s\n", "================================");
 	}
 	else {
 		if (dm_value[1] == 1) { /* enable */
@@ -1048,16 +1048,16 @@ enum halrf_cmninfo_hook cmn_info,
 {
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
 	struct _hal_rf_				*rf = &dm->rf_table;
-	
+
 	switch	(cmn_info) {
 	case	HALRF_CMNINFO_CON_TX:
 		rf->is_con_tx = (boolean *)value;
 		break;
 	case	HALRF_CMNINFO_SINGLE_TONE:
-		rf->is_single_tone = (boolean *)value;		
+		rf->is_single_tone = (boolean *)value;
 		break;
 	case	HALRF_CMNINFO_CARRIER_SUPPRESSION:
-		rf->is_carrier_suppresion = (boolean *)value;		
+		rf->is_carrier_suppresion = (boolean *)value;
 		break;
 	case	HALRF_CMNINFO_MP_RATE_INDEX:
 		rf->mp_rate_index = (u8 *)value;
@@ -1080,7 +1080,7 @@ halrf_cmn_info_set(
 	/*  */
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
 	struct _hal_rf_				*rf = &dm->rf_table;
-	
+
 	switch	(cmn_info) {
 		case	HALRF_CMNINFO_ABILITY:
 			rf->rf_supportability = (u32)value;
@@ -1132,7 +1132,7 @@ halrf_cmn_info_get(
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
 	struct _hal_rf_				*rf = &dm->rf_table;
 	u64	return_value = 0;
-	
+
 	switch	(cmn_info) {
 		case	HALRF_CMNINFO_ABILITY:
 			return_value = (u32)rf->rf_supportability;
@@ -1163,8 +1163,8 @@ halrf_supportability_init_mp(
 
 	switch (dm->support_ic_type) {
 	case ODM_RTL8814B:
-		#if (RTL8814B_SUPPORT == 1) 
-		rf->rf_supportability = 
+		#if (RTL8814B_SUPPORT == 1)
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1172,9 +1172,9 @@ halrf_supportability_init_mp(
 			0;
 		#endif
 		break;
-	#if (RTL8822B_SUPPORT == 1) 
+	#if (RTL8822B_SUPPORT == 1)
 	case ODM_RTL8822B:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1183,9 +1183,9 @@ halrf_supportability_init_mp(
 		break;
 	#endif
 
-	#if (RTL8821C_SUPPORT == 1) 
+	#if (RTL8821C_SUPPORT == 1)
 	case ODM_RTL8821C:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1196,7 +1196,7 @@ halrf_supportability_init_mp(
 	#endif
 
 	default:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1220,8 +1220,8 @@ halrf_supportability_init(
 
 	switch (dm->support_ic_type) {
 	case ODM_RTL8814B:
-		#if (RTL8814B_SUPPORT == 1) 
-		rf->rf_supportability = 
+		#if (RTL8814B_SUPPORT == 1)
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1229,9 +1229,9 @@ halrf_supportability_init(
 			0;
 		#endif
 		break;
-	#if (RTL8822B_SUPPORT == 1) 
+	#if (RTL8822B_SUPPORT == 1)
 	case ODM_RTL8822B:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1240,20 +1240,20 @@ halrf_supportability_init(
 		break;
 	#endif
 
-	#if (RTL8821C_SUPPORT == 1) 
+	#if (RTL8821C_SUPPORT == 1)
 	case ODM_RTL8821C:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
-			/*HAL_RF_DPK				|*/		
+			/*HAL_RF_DPK				|*/
 			/*HAL_RF_TXGAPK				|*/
 			0;
 		break;
 	#endif
 
 	default:
-		rf->rf_supportability = 
+		rf->rf_supportability =
 			HAL_RF_TX_PWR_TRACK	|
 			HAL_RF_IQK				|
 			HAL_RF_LCK				|
@@ -1284,16 +1284,16 @@ halrf_iqk_init(
 	struct _hal_rf_				*rf = &(dm->rf_table);
 
 	switch (dm->support_ic_type) {
-	#if (RTL8814B_SUPPORT == 1) 
+	#if (RTL8814B_SUPPORT == 1)
 	case ODM_RTL8814B:
 		break;
 	#endif
-	#if (RTL8822B_SUPPORT == 1) 
+	#if (RTL8822B_SUPPORT == 1)
 	case ODM_RTL8822B:
 		_iq_calibrate_8822b_init(dm);
 		break;
 	#endif
-	#if (RTL8821C_SUPPORT == 1) 
+	#if (RTL8821C_SUPPORT == 1)
 	case ODM_RTL8821C:
 		break;
 	#endif
@@ -1343,72 +1343,72 @@ halrf_iqk_trigger(
 		odm_release_spin_lock(dm, RT_IQK_SPINLOCK);
 		start_time = odm_get_current_time(dm);
 		switch (dm->support_ic_type) {
-#if (RTL8188E_SUPPORT == 1) 
+#if (RTL8188E_SUPPORT == 1)
 		case ODM_RTL8188E:
 			phy_iq_calibrate_8188e(dm, is_recovery);
 			break;
 #endif
-#if (RTL8188F_SUPPORT == 1) 
+#if (RTL8188F_SUPPORT == 1)
 		case ODM_RTL8188F:
 			phy_iq_calibrate_8188f(dm, is_recovery);
 			break;
 #endif
-#if (RTL8192E_SUPPORT == 1) 
+#if (RTL8192E_SUPPORT == 1)
 		case ODM_RTL8192E:
 			phy_iq_calibrate_8192e(dm, is_recovery);
 			break;
 #endif
-#if (RTL8197F_SUPPORT == 1) 
+#if (RTL8197F_SUPPORT == 1)
 		case ODM_RTL8197F:
 			phy_iq_calibrate_8197f(dm, is_recovery);
 			break;
 #endif
-#if (RTL8703B_SUPPORT == 1) 
+#if (RTL8703B_SUPPORT == 1)
 		case ODM_RTL8703B:
 			phy_iq_calibrate_8703b(dm, is_recovery);
 			break;
 #endif
-#if (RTL8710B_SUPPORT == 1) 
+#if (RTL8710B_SUPPORT == 1)
 		case ODM_RTL8710B:
 			phy_iq_calibrate_8710b(dm, is_recovery);
 			break;
 #endif
-#if (RTL8723B_SUPPORT == 1) 
+#if (RTL8723B_SUPPORT == 1)
 		case ODM_RTL8723B:
 			phy_iq_calibrate_8723b(dm, is_recovery);
 			break;
 #endif
-#if (RTL8723D_SUPPORT == 1) 
+#if (RTL8723D_SUPPORT == 1)
 		case ODM_RTL8723D:
 			phy_iq_calibrate_8723d(dm, is_recovery);
 			break;
 #endif
-#if (RTL8812A_SUPPORT == 1) 
+#if (RTL8812A_SUPPORT == 1)
 		case ODM_RTL8812:
 			phy_iq_calibrate_8812a(dm, is_recovery);
 			break;
 #endif
-#if (RTL8821A_SUPPORT == 1) 
+#if (RTL8821A_SUPPORT == 1)
 		case ODM_RTL8821:
 			phy_iq_calibrate_8821a(dm, is_recovery);
 			break;
 #endif
-#if (RTL8814A_SUPPORT == 1) 
+#if (RTL8814A_SUPPORT == 1)
 		case ODM_RTL8814A:
 			phy_iq_calibrate_8814a(dm, is_recovery);
 			break;
 #endif
-#if (RTL8822B_SUPPORT == 1) 
+#if (RTL8822B_SUPPORT == 1)
 		case ODM_RTL8822B:
 			phy_iq_calibrate_8822b(dm, false, false);
 			break;
 #endif
-#if (RTL8821C_SUPPORT == 1) 
+#if (RTL8821C_SUPPORT == 1)
 		case ODM_RTL8821C:
 			phy_iq_calibrate_8821c(dm, false, false);
 			break;
 #endif
-#if (RTL8814B_SUPPORT == 1) 
+#if (RTL8814B_SUPPORT == 1)
 		case ODM_RTL8814B:
 			break;
 #endif
@@ -1436,7 +1436,7 @@ halrf_lck_trigger(
 	struct dm_iqk_info		*iqk_info = &dm->IQK_info;
 	struct _hal_rf_				*rf = &dm->rf_table;
 	u64 start_time;
-	
+
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN))
 	if (odm_check_power_status(dm) == false)
 		return;
@@ -1497,7 +1497,7 @@ halrf_lck_trigger(
 			phy_lc_calibrate_8710b(dm);
 			break;
 #endif
-#if (RTL8723B_SUPPORT == 1) 
+#if (RTL8723B_SUPPORT == 1)
 		case ODM_RTL8723B:
 			phy_lc_calibrate_8723b(dm);
 			break;
@@ -1512,27 +1512,27 @@ halrf_lck_trigger(
 			phy_lc_calibrate_8812a(dm);
 			break;
 #endif
-#if (RTL8821A_SUPPORT == 1) 
+#if (RTL8821A_SUPPORT == 1)
 		case ODM_RTL8821:
 			phy_lc_calibrate_8821a(dm);
 			break;
 #endif
-#if (RTL8814A_SUPPORT == 1) 
+#if (RTL8814A_SUPPORT == 1)
 		case ODM_RTL8814A:
 			phy_lc_calibrate_8814a(dm);
 			break;
 #endif
-#if (RTL8822B_SUPPORT == 1) 
+#if (RTL8822B_SUPPORT == 1)
 		case ODM_RTL8822B:
 			phy_lc_calibrate_8822b(dm);
 			break;
 #endif
-#if (RTL8821C_SUPPORT == 1) 
+#if (RTL8821C_SUPPORT == 1)
 		case ODM_RTL8821C:
 			phy_lc_calibrate_8821c(dm);
 			break;
 #endif
-#if (RTL8814B_SUPPORT == 1) 
+#if (RTL8814B_SUPPORT == 1)
 		case ODM_RTL8814B:
 			break;
 #endif
@@ -1546,7 +1546,7 @@ halrf_lck_trigger(
 #endif
 		odm_acquire_spin_lock(dm, RT_IQK_SPINLOCK);
 		dm->rf_calibrate_info.is_lck_in_progress = false;
-		odm_release_spin_lock(dm, RT_IQK_SPINLOCK);		
+		odm_release_spin_lock(dm, RT_IQK_SPINLOCK);
 	}else
 		PHYDM_DBG(dm, ODM_COMP_CALIBRATION, "== Return the LCK CMD, because RFK is in Progress ==\n");
 }
@@ -1557,7 +1557,7 @@ halrf_init(
 )
 {
 	struct dm_struct		*dm = (struct dm_struct *)dm_void;
-	
+
 	PHYDM_DBG(dm, ODM_COMP_INIT, "HALRF_Init\n");
 
 	if (*dm->mp_mode == true)
@@ -1569,7 +1569,3 @@ halrf_init(
 	/*iqk_init();*/
 	/*dpk_init();*/
 }
-
-
-
-
