@@ -24,9 +24,11 @@ s32	rtl8188eu_init_xmit_priv(_adapter *padapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
 #ifdef PLATFORM_LINUX
-	tasklet_init(&pxmitpriv->xmit_tasklet,
-		     (void(*)(unsigned long))rtl8188eu_xmit_tasklet,
-		     (unsigned long)padapter);
+	tasklet_init(
+							 &pxmitpriv->xmit_tasklet
+		     			 , (void *)rtl8188eu_xmit_tasklet
+							 , (unsigned long)padapter
+						 	);
 #endif
 #ifdef CONFIG_TX_EARLY_MODE
 	pHalData->bEarlyModeEnable = padapter->registrypriv.early_mode;
@@ -35,8 +37,9 @@ s32	rtl8188eu_init_xmit_priv(_adapter *padapter)
 	return _SUCCESS;
 }
 
-void	rtl8188eu_free_xmit_priv(_adapter *padapter)
+void rtl8188eu_free_xmit_priv(_adapter *padapter)
 {
+	/* For some reason this function is empty... so TODO */
 }
 
 u8 urb_zero_packet_chk(_adapter *padapter, int sz)
