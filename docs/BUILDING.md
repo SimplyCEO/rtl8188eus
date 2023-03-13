@@ -28,11 +28,11 @@ It also checks whether the file have or not have a variable inside.
 It is necessary the usage of kernel headers. Each distribution have a different package.<br>
 They can also be manually compiled. See [this](https://www.kernel.org/doc/html/latest/kbuild/modules.html).
 
-<b>Remember to run the commands as [root](https://en.wikipedia.org/wiki/Superuser).</b><br>
-Root can be accessed by doing `su` or `sudo su` command.
-
 Compilation
 ------------
+
+<b>Remember to run the commands as [root](https://en.wikipedia.org/wiki/Superuser).</b><br>
+Root can be accessed by doing `su` or `sudo su` command.
 
 You will need to blacklist a older driver in order to use this one:
 ```sh
