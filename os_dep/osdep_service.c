@@ -2576,7 +2576,7 @@ inline u32 rtw_random32(void)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 4))
 	return get_random_u32_below(random_int);
 #elif (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 1, 0))
-	return prandom_u32_max(0);
+	return prandom_u32_max(random_int);
 #elif (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0))
 	return prandom_u32();
 #elif (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 18))
@@ -2785,7 +2785,7 @@ int map_readN(const struct map_t *map, u16 offset, u16 len, u8 *buf)
 			else
 				c_len = seg->sa + seg->len - offset;
 		}
-			
+
 		_rtw_memcpy(c_dst, c_src, c_len);
 	}
 
@@ -2969,7 +2969,7 @@ void dump_blacklist(void *sel, _queue *blist, const char *title)
 	if (rtw_end_of_queue_search(head, list) == _FALSE) {
 		if (title)
 			RTW_PRINT_SEL(sel, "%s:\n", title);
-	
+
 		while (rtw_end_of_queue_search(head, list) == _FALSE) {
 			ent = LIST_CONTAINOR(list, struct blacklist_ent, list);
 			list = get_next(list);
@@ -3113,4 +3113,3 @@ int hexstr2bin(const char *hex, u8 *buf, size_t len)
 	}
 	return 0;
 }
-
