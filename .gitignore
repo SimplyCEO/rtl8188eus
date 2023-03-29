@@ -5,6 +5,7 @@ build/
 *.mod
 *.mod.c
 *.o
+*.o.d
 .*.cmd
 *.ko
 Module.symvers
