@@ -1752,7 +1752,7 @@ phydm_pause_func_console(
 	{
 		for (i = 0; i < 10; i++)
 		{
-			if (strlen(input[i+1])!=0)
+			if (strnlen(input[i+1], 1))
 				PHYDM_SSCANF(input[i+1], DCMD_HEX, &var1[i]);
 		}
 

@@ -966,7 +966,7 @@ halrf_support_ability_debug(
 
 	for (i = 0; i < 5; i++)
 	{
-		if (strlen(input[i+1])!=0)
+		if (strnlen(input[i+1], 1))
 			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &dm_value[i]);
 	}
 

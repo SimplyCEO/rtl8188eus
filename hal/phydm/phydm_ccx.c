@@ -316,11 +316,8 @@ phydm_fahm_dbg(
 	u32		out_len = *_out_len;
 	u32		i;
 
-	for (i = 0; i < 2; i++)
-	{
-		if (strlen(input[i+1])!=0)
-			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
-	}
+	for (i=0; (i<2 && strnlen(input[i+1], 1)); i++)
+		PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
 
 	if ((strcmp(input[1], help) == 0)) {
 		PDM_SNPF(out_len, used, output + used, out_len - used, "{1: trigger, 2:get result}\n");
@@ -917,11 +914,9 @@ phydm_nhm_dbg(
 		}
 		else
 		{
-			for (i = 1; i < 7; i++)
-			{
-				if (strlen(input[i+1])!=0)
-					PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
-			}
+			for (i=0; (i<7 && strnlen(input[i+1], 1)); i++)
+				PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
+
 			nhm_para.incld_txon = (enum nhm_inexclude_txon_all)var1[1];
 			nhm_para.incld_cca = (enum nhm_inexclude_cca_all)var1[2];
 			nhm_para.div_opt = (enum nhm_divider_opt_all)var1[3];
@@ -1791,11 +1786,8 @@ phydm_clm_dbg(
 	struct clm_para_info	clm_para = {0};
 	u32		i;
 
-	for (i = 0; i < 4; i++)
-	{
-		if (strlen(input[i+1])!=0)
-			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
-	}
+	for (i=0; (i<4 && strnlen(input[i+1], 1)); i++)
+		PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
 
 	if ((strcmp(input[1], help) == 0)) {
 		PDM_SNPF(out_len, used, output + used, out_len - used, "CLM Driver Basic-Trigger 262ms: {1}\n");

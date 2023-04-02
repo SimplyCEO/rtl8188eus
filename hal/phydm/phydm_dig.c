@@ -1843,11 +1843,8 @@ phydm_dig_debug(
 	} else {
 		PHYDM_SSCANF(input[1], DCMD_DECIMAL, &var1[0]);
 
-		for (i = 1; i < 10; i++)
-		{
-			if (strlen(input[i+1])!=0)
-				PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
-		}
+		for (i=1; (i<10 && strnlen(input[i+1], 1)); i++)
+			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
 
 		if (var1[0] == 0) {
 			dig_t->is_dbg_fa_th = true;

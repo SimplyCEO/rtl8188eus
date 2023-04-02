@@ -113,11 +113,8 @@ phydm_ra_debug(
 	u8	i = 0;
 	u32	reg_u32_tmp;
 
-	for (i = 0; i < 5; i++)
-	{
-		if (strlen(input[i+1])!=0)
-			PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
-	}
+	for (i=0; (i<5 && strnlen(input[i+1], 1)); i++)
+		PHYDM_SSCANF(input[i+1], DCMD_DECIMAL, &var1[i]);
 
 	if ((strcmp(input[1], help) == 0)) {
 		PDM_SNPF(out_len, used, output + used, out_len - used,
