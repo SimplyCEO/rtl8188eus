@@ -53,4 +53,6 @@ modprobe -r r8188eu
 modprobe 8188eu
 ```
 
+<b>Important note</b>: From kernel version `6.3+` the driver changed from `r8188eu` to `rtl8xxxu`.
+
 [Main page](../../..) | [Enabling/Disabling monitor mode](./MODES.md)

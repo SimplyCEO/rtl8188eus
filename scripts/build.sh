@@ -1,12 +1,44 @@
 #!/bin/bash
 
+# Check kernel version
+MAJOR_VERSION=6
+MINOR_VERSION=3
+PATCH_VERSION=0
+function check_if_new()
+{
+  return $(uname -r | awk -F '.'
+  '{
+    if ($1 < ${MAJOR_VERSION}) { print 1; }
+    else if ($1 == ${MAJOR_VERSION})
+    {
+      if ($2 <= ${MINOR_VERSION}) { print 1; }
+      else if ($2 == ${MINOR_VERSION})
+      {
+        if ($3 <= ${PATCH_VERSION}) { print 1; }
+        else { print 0; }
+      }
+      else { print 0; }
+    }
+    else { print 0; }
+  }')
+}
+
+# Apply driver name based on the kernel version
+CURRENT_DRIVER = ""
+if check_if_new; then
+  CURRENT_DRIVER = "rtl8xxxu"
+else
+  CURRENT_DRIVER = "r8188eu"
+fi
+NEW_DRIVER = "8188eu"
+
 # Environment variables
 CURRENT_SHELL=$(ps -hp $$ | awk '{printf $5}')
 CURRENT_USER=$(whoami)
 CURRENT_HOME=""
 CURRENT_PWD=$(pwd)
 CORE=$(nproc)
-IS_NOT_BLACKLISTED=$(cat /etc/modprobe.d/realtek.conf | grep "blacklist r8188eu")
+IS_NOT_BLACKLISTED=$(cat /etc/modprobe.d/realtek.conf | grep "blacklist ${CURRENT_DRIVER}")
 INSTALLATION_PATH_DOES_NOT_EXIST=$(printf $PATH | grep /usr/local/sbin)
 DO_DIRECTORY_EXISTS=0
 
@@ -39,7 +71,7 @@ fi
 # Check if the device is already blacklisted.
 if [ -z "${IS_NOT_BLACKLISTED}" ]; then
 	sudo mkdir -pv /etc/modprobe.d
-	printf "blacklist r8188eu\n" | sudo tee "/etc/modprobe.d/realtek.conf"
+	printf "blacklist ${CURRENT_DRIVER}\n" | sudo tee "/etc/modprobe.d/realtek.conf"
 fi
 
 # Check if /usr/local/sbin exists.
@@ -60,10 +92,10 @@ else
 fi
 
 # Installation process.
-sudo rmmod r8188eu # This one can be anything. I am using this one because is the common TL-WN722N v2/v3
-sudo rmmod 8188eu 2&>/dev/null # Remove old/installed module. Visual purposes.
+sudo rmmod ${CURRENT_DRIVER} # This one can be anything. I am using this one because is the common TL-WN722N v2/v3
+sudo rmmod ${NEW_DRIVER} 2&>/dev/null # Remove old/installed module. Visual purposes.
 make -j${CORE} && sudo make install
-sudo modprobe 8188eu # Load the new driver/module
+sudo modprobe ${NEW_DRIVER} # Load the new driver/module
 sudo cp -v scripts/toggle-monitor.sh /usr/local/bin/toggle-monitor
 sudo chown ${USER}:${USER} /usr/local/bin/toggle-monitor
 sudo chmod +x /usr/local/bin/toggle-monitor
