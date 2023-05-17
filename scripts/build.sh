@@ -1,36 +1,43 @@
 #!/bin/bash
 
-# Check kernel version
-MAJOR_VERSION=6
-MINOR_VERSION=3
-PATCH_VERSION=0
+# Check kernel version.
 function check_if_new()
 {
-  return $(uname -r | awk -F '.'
-  '{
-    if ($1 < ${MAJOR_VERSION}) { print 1; }
-    else if ($1 == ${MAJOR_VERSION})
-    {
-      if ($2 <= ${MINOR_VERSION}) { print 1; }
-      else if ($2 == ${MINOR_VERSION})
-      {
-        if ($3 <= ${PATCH_VERSION}) { print 1; }
-        else { print 0; }
-      }
-      else { print 0; }
-    }
-    else { print 0; }
-  }')
+  local KERNEL_VERSION=$(uname --kernel-release | cut --delimiter="." --fields=1-2)
+  local KERNEL_MAJOR_VERSION=$(echo ${KERNEL_VERSION} | cut --delimiter="." --fields=1)
+  local KERNEL_MINOR_VERSION=$(echo ${KERNEL_VERSION} | cut --delimiter="." --fields=2)
+
+  if [ ${KERNEL_MAJOR_VERSION} -ge "6" ]; then
+    if [ ${KERNEL_MINOR_VERSION} -ge "3" ]; then
+      return 0
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
 }
 
-# Apply driver name based on the kernel version
-CURRENT_DRIVER = ""
+# Apply driver name based on the kernel version.
+CURRENT_DRIVER=""
 if check_if_new; then
-  CURRENT_DRIVER = "rtl8xxxu"
+  CURRENT_DRIVER="rtl8xxxu"
 else
-  CURRENT_DRIVER = "r8188eu"
+  CURRENT_DRIVER="r8188eu"
 fi
-NEW_DRIVER = "8188eu"
+NEW_DRIVER="8188eu"
+
+# Check the package manager.
+if type dpkg &>/dev/null; then
+	sudo apt-get update && sudo apt-get install gawk tar git gcc bc make linux-headers-$(uname -r) zenity -y
+elif type pacman &>/dev/null; then
+	sudo pacman -S --needed --noconfirm gawk tar git gcc bc make linux-headers zenity
+elif type dnf &>/dev/null; then
+	sudo dnf install -y gawk tar git gcc bc make kernel-devel zenity
+else
+	printf "${GREEN}""Consider installing the kernel headers by yourself.""${RESET_COLOUR}""\n"
+  exit 1
+fi
 
 # Environment variables
 CURRENT_SHELL=$(ps -hp $$ | awk '{printf $5}')
@@ -78,17 +85,6 @@ fi
 if [ -z "${INSTALLATION_PATH_DOES_NOT_EXIST}" ]; then
 	sudo mkdir -pv /usr/local/sbin
 	printf "export PATH=/usr/local/sbin:$PATH\n" >> ."${CURRENT_SHELL}""rc"
-fi
-
-# Check the package manager.
-if type dpkg &>/dev/null; then
-	sudo apt-get update && sudo apt-get install gawk tar git gcc bc make linux-headers-$(uname -r) zenity -y
-elif type pacman &>/dev/null; then
-	sudo pacman -S --needed --noconfirm gawk tar git gcc bc make linux-headers zenity
-elif type dnf &>/dev/null; then
-	sudo dnf install -y gawk tar git gcc bc make kernel-devel zenity
-else
-	printf "${GREEN}""Consider installing the kernel headers by yourself.""${RESET_COLOUR}""\n"
 fi
 
 # Installation process.
