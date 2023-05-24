@@ -112,6 +112,22 @@ GET_PM_INFO()
   esac
 }
 
+IS_TERMUX()
+{
+  if [ $TERMUX_VERSION ]
+    then return 0
+    else return 1
+  fi
+}
+
+### Check if it is running from Termux ###
+
+if IS_TERMUX
+  then
+    printf "${RED}""Error: Termux is not supported yet. Consider compiling the repository without script execution.""${RESET_COLOUR}""\n"
+    exit 1
+fi
+
 ### Check about root ###
 
 CURRENT_HOME=""
