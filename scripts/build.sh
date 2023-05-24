@@ -26,7 +26,7 @@ RESET_COLOUR="\e[0m"
 # int: Checks if script is running with root.
 #      If not, no updates will happen.
 #      The script will compile but will not install.
-function AM_I_ROOT()
+AM_I_ROOT()
 {
   local user=$(whoami)
 
@@ -40,7 +40,7 @@ function AM_I_ROOT()
 #       If no root manager is found, "sh -c" will be used.
 #       Therefore the user will need to insert the password for every
 #         root dependable command.
-function GET_ROOT_MANAGER()
+GET_ROOT_MANAGER()
 {
   if type sudo &>/dev/null; then ROOT="sudo"
   elif type doas &>/dev/null; then ROOT="doas"
@@ -49,7 +49,7 @@ function GET_ROOT_MANAGER()
 }
 
 # int: Check kernel version.
-function CHECK_KERNEL_VERSION()
+CHECK_KERNEL_VERSION()
 {
   local KERNEL_VERSION=$(printf "${CURRENT_KERNEL}" | cut --delimiter="." --fields=1-2)
   local KERNEL_MAJOR_VERSION=$(printf "${KERNEL_VERSION}" | cut --delimiter="." --fields=1)
@@ -66,7 +66,7 @@ function CHECK_KERNEL_VERSION()
 }
 
 # int: Return the package manager name.
-function CHECK_PACKAGE_MANAGER()
+CHECK_PACKAGE_MANAGER()
 {
   if type dpkg &>/dev/null; then return 1
   elif type pacman &>/dev/null; then return 2
@@ -76,7 +76,7 @@ function CHECK_PACKAGE_MANAGER()
 }
 
 # void: Get the package manager information.
-function GET_PM_INFO()
+GET_PM_INFO()
 {
   CHECK_PACKAGE_MANAGER
   local i=$?
