@@ -24,11 +24,28 @@ Trying to find a solution? See [troubleshooting](./docs/TROUBLESHOOTING.md).
 |   Frame injection |   ✅      |   🔵      |   Tested and working.                             |
 |   Kernel 5.8+     |   ✅      |   🟢      |   Kernel 5.15+ tested.                            |
 
-## Building
+Building
+--------
 
-All the instructions are being moved to the [Documentation](./docs/BUILDING.md) or the [Wiki](https://gitlab.com/KanuX/rtl8188eus/-/wikis/home).
+The quickest compile can presume:
+```sh
+git clone --depth 1 https://gitlab.com/KanuX/rtl8188eus.git
+cd rtl8188eus/
+make -j$(nproc)
+su -c "make install clean"
+su -c "modprobe 8188eu"
+```
 
-# Credits
+The old driver will be kept, but it need to be deactivated.<br>
+Verify if your kernel is equal or newer than '6.3.x'.<br>
+If it is, then the driver is called `rtl8xxxu`. Otherwise it is `r8188eu`.
+
+All the instructions and explanations can be found by<br>
+[reading the documentation](./docs/BUILDING.md) or at the [Wiki](https://gitlab.com/KanuX/rtl8188eus/-/wikis/home).
+
+Credits
+-------
+
 Realtek       - https://www.realtek.com<br>
 Alfa Networks - https://www.alfa.com.tw<br>
 aircrack-ng  - https://www.aircrack-ng.org<br>
