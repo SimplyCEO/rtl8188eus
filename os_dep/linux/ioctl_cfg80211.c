@@ -9413,7 +9413,10 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.del_beacon = cfg80211_rtw_del_beacon,
 #else
 	.start_ap = cfg80211_rtw_start_ap,
+  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0))
+  #else
 	.change_beacon = cfg80211_rtw_change_beacon,
+  #endif
 	.stop_ap = cfg80211_rtw_stop_ap,
 #endif
 
