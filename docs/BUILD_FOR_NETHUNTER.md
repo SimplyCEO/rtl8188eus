@@ -10,7 +10,7 @@ make modules_install INSTALL_MOD_PATH=../
 
 ```
 cd ../
-curl -L https://gitlab.com/KanuX/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz --output rtl8188eus-master.tar.gz
+curl -L https://gitlab.com/SimplyCEO/rtl8188eus/-/archive/master/rtl8188eus-master.tar.gz --output rtl8188eus-master.tar.gz
 tar -xvf rtl8188eus-master.tar.gz
 cd rtl8188eus-master/
 ```

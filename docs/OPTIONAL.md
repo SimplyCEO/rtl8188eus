@@ -2,7 +2,7 @@ toggle-monitor
 ==============
 
 With this, the toggle script will appear in your DE's menu. Under `Accessories` and `Internet`.
-```sh
+```shell
 cp toggle-monitor.sh /usr/local/bin/toggle-monitor
 chown $USER:$USER /usr/local/bin/toggle-monitor
 chmod +x /usr/local/bin/toggle-monitor

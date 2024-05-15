@@ -9,12 +9,13 @@ ip address
 
 Use these steps to enter monitor mode.
 
-|   Init System   |   Command                                   |
+|   Init System   |                  Command                    |
 |-----------------|---------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager stop            |
-|   SystemD       |   systemctl stop NetworkManager.service     |
+|     runit       |   sv stop NetworkManager                    |
+|     OpenRC      |   rc-service NetworkManager stop            |
+|     SystemD     |   systemctl stop NetworkManager.service     |
 
-```sh
+```shell
 ip link set <interface> down
 iw dev <interface> set type monitor
 ip link set <interface> name <new_interface_name> # optional
@@ -33,12 +34,13 @@ Managed Mode
 
 Use these steps to disable monitor mode. (not possible if your device's MAC address is added to `unmanaged-devices` variable under "NetworkManager.conf")
 
-|   Init System   |   Command                                   |
+|   Init System   |                  Command                    |
 |-----------------|---------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager start           |
-|   SystemD       |   systemctl start NetworkManager.service    |
+|     runit       |   sv start NetworkManager                   |
+|     OpenRC      |   rc-service NetworkManager start           |
+|     SystemD     |   systemctl start NetworkManager.service    |
 
-```sh
+```shell
 iw dev <interface> set type managed
 ip link set <interface> name <old_interface_name> # optional
 ip link set <interface> up
@@ -47,9 +49,10 @@ Note: Most of the cases the `old_interface_name` is wlan0.
 
 If the adapter still refuses to go back, try:
 
-|   Init System   |   Command                                     |
-|-----------------|-----------------------------------------------|
-|   OpenRC        |   rc-service NetworkManager restart           |
-|   SystemD       |   systemctl restart NetworkManager.service    |
+|   Init System   |                  Command                    |
+|-----------------|---------------------------------------------|
+|     runit       |   sv restart NetworkManager                 |
+|     OpenRC      |   rc-service NetworkManager restart         |
+|     SystemD     |   systemctl restart NetworkManager.service  |
 
 [Building](./BUILDING.md) | [NetworkManager configuration](./NETWORKMANAGER.md)
