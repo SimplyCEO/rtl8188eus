@@ -590,7 +590,7 @@ void	*dm_void)
 	ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b thermal trim flag:0x%02x\n", power_trim_info->flag));
 	
 	if (power_trim_info->flag & KFREE_FLAG_THERMAL_K_ON)
-		ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b thermal:%d\n", power_trim_info->thermal));
+	{ ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b thermal:%d\n", power_trim_info->thermal)); }
 
 }
 
@@ -619,9 +619,8 @@ phydm_get_power_trim_offset_8710b(
 
 		ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b power trim flag:0x%02x\n", power_trim_info->flag));
 
-		if (power_trim_info->flag & KFREE_FLAG_ON) 
-
-		ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b power_trim_data->bb_gain[0][0]=0x%X\n",  power_trim_info->bb_gain[0][0]));
+		if (power_trim_info->flag & KFREE_FLAG_ON)
+		{ ODM_RT_TRACE(dm, ODM_COMP_MP, ODM_DBG_LOUD, ("[kfree] 8710b power_trim_data->bb_gain[0][0]=0x%X\n",  power_trim_info->bb_gain[0][0])); }
 
 }
 void
