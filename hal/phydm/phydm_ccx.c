@@ -1664,7 +1664,7 @@ phydm_clm_mntr_set(
 		return PHYDM_SET_FAIL;
 	}
 
-	if (phydm_clm_racing_ctrl(dm, clm_para->clm_lv) == PHYDM_SET_FAIL)
+	if (phydm_clm_racing_ctrl(dm, (enum phydm_nhm_level)clm_para->clm_lv) == PHYDM_SET_FAIL)
 		return PHYDM_SET_FAIL;
 
 	if (clm_para->mntr_time >= 262)
