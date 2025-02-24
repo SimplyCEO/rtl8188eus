@@ -2098,6 +2098,7 @@ static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
  */
 u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 {
+  char psd_data_str[8] = {0};
 	u32 i, psd_pts = 0, psd_start = 0, psd_stop = 0;
 	u32 psd_data = 0;
 
@@ -2127,7 +2128,9 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 			psd_data = rtw_GetPSDData(pAdapter, i - psd_pts);
 		else
 			psd_data = rtw_GetPSDData(pAdapter, i);
-		sprintf(data, "%s%x ", data, psd_data);
+
+		sprintf(psd_data_str, "%x ", psd_data);
+		strcat(data, psd_data_str);
 		i++;
 	}
 
