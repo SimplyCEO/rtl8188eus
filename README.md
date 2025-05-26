@@ -37,7 +37,12 @@ su -c "make install clean"
 su -c "modprobe --remove rtl8xxxu && modprobe 8188eu"
 ```
 
-The old driver will be kept, but it need to be deactivated.<br>
+Or with DKMS:
+```shell
+su -c "sh dkms-install.sh"
+```
+
+The old driver will be kept, but it need to be [deactivated](/docs/BUILDING.md#compilation).<br>
 Verify if your kernel is equal or newer than '6.3.x'.<br>
 If it is, then the driver is called `rtl8xxxu`. Otherwise it is `r8188eu`.
 

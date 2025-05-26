@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ $EUID -ne 0 ]]; then
-  echo "You must run this with superuser priviliges.  Try \"su -c \"./dkms-install.sh\"\"" 2>&1
+if [ ${EUID} -ne 0 ]; then
+  printf "You must run this with root privileges.\n" 2>&1
   exit 1
 else
-  echo "About to run dkms install steps..."
+  printf "Running dkms install...\n"
 fi
 
 DRV_DIR=rtl8188eus
@@ -18,6 +18,10 @@ dkms build -m ${DRV_NAME} -v ${DRV_VERSION}
 dkms install -m ${DRV_NAME} -v ${DRV_VERSION}
 RESULT=$?
 
-echo "Finished running dkms install steps."
+if [ "${RESULT}" != "0" ]; then
+  printf "An error has occured while trying to install the driver.\n" 2>&1
+else
+  printf "Driver succesfully installed.\n"
+fi
 
-exit $RESULT
+exit ${RESULT}

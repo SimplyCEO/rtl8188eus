@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ $EUID -ne 0 ]]; then
-  echo "You must run this with superuser priviliges.  Try \"su -c \"./dkms-remove.sh\"\"" 2>&1
+if [ ${EUID} -ne 0 ]; then
+  printf "You must run this with root privileges.\n" 2>&1
   exit 1
 else
-  echo "About to run dkms removal steps..."
+  printf "Running dkms install...\n"
 fi
 
 DRV_DIR=rtl8188eus
@@ -13,12 +13,12 @@ DRV_VERSION=5.3.9
 
 dkms remove ${DRV_NAME}/${DRV_VERSION} --all
 rm -rf /usr/src/${DRV_NAME}-${DRV_VERSION}
-
 RESULT=$?
-if [[ "$RESULT" != "0" ]]; then
-  echo "Error occurred while running dkms remove." 2>&1
+
+if [ "${RESULT}" != "0" ]; then
+  printf "An error has occured while trying to remove the driver.\n" 2>&1
 else
-  echo "Finished running dkms removal steps."
+  printf "Driver succesfully uninstalled.\n"
 fi
 
-exit $RESULT
+exit ${RESULT}
