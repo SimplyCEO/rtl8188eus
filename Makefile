@@ -2049,6 +2049,27 @@ endif
 
 obj-$(CONFIG_RTL8188EU) := $(MODULE_NAME).o
 
+# Support for kernel 6.15+ configuration
+KVER = $(shell uname -r)
+KMAJ = $(shell echo $(KVER) | \
+sed -e 's/^\([0-9][0-9]*\)\.[0-9][0-9]*\.[0-9][0-9]*.*/\1/')
+KMIN = $(shell echo $(KVER) | \
+sed -e 's/^[0-9][0-9]*\.\([0-9][0-9]*\)\.[0-9][0-9]*.*/\1/')
+KREV = $(shell echo $(KVER) | \
+sed -e 's/^[0-9][0-9]*\.[0-9][0-9]*\.\([0-9][0-9]*\).*/\1/')
+GET_KERNEL_VERSION = $(shell \
+echo test | awk '{if($(KMAJ) < $(1)) {print 0} else { \
+if($(KMAJ) > $(1)) {print 1} else { \
+if($(KMIN) < $(2)) {print 0} else { \
+if($(KMIN) > $(2)) {print 1} else { \
+if($(KREV) < $(3)) {print 0} else { print 1 } \
+}}}}}' \
+)
+
+ifeq ($(call GET_KERNEL_VERSION,6,15,0),1)
+ccflags-y = $(EXTRA_CFLAGS)
+endif
+
 else
 
 export CONFIG_RTL8188EU = m
