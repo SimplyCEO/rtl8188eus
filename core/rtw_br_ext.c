@@ -24,7 +24,13 @@
 #endif
 	#include <linux/atalk.h>
 	#include <linux/udp.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 1, 0))
+	#undef __KERNEL__
 	#include <linux/if_pppox.h>
+	#define __KERNEL__
+#else
+	#include <linux/if_pppox.h>
+#endif
 #endif
 
 #if 1	/* rtw_wifi_driver */
