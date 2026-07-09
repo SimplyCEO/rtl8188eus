@@ -1714,7 +1714,7 @@ phydm_process_rssi_for_dm(
 			}
 			if (sta->rssi_stat.ofdm_pkt_cnt != 64) {
 				i = 63;
-				sta->rssi_stat.ofdm_pkt_cnt -= (u8)(((sta->rssi_stat.packet_map >> i) & BIT(0)) - 1);
+				sta->rssi_stat.ofdm_pkt_cnt -= (u8)((((u64)sta->rssi_stat.packet_map >> i) & BIT(0)) - 1);
 			}
 			sta->rssi_stat.packet_map = (sta->rssi_stat.packet_map << 1) | BIT(0);
 
@@ -1751,7 +1751,7 @@ phydm_process_rssi_for_dm(
 				}
 			}
 			i = 63;
-			sta->rssi_stat.ofdm_pkt_cnt -= (u8)((sta->rssi_stat.packet_map >> i) & BIT(0));
+			sta->rssi_stat.ofdm_pkt_cnt -= (u8)(((u64)sta->rssi_stat.packet_map >> i) & BIT(0));
 			sta->rssi_stat.packet_map = sta->rssi_stat.packet_map << 1;
 		}
 
