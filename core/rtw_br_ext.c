@@ -22,7 +22,9 @@
   #define NET_IPX_KERNEL
 	#include <net/ipx.h>
 #endif
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
 	#include <linux/atalk.h>
+#endif
 	#include <linux/udp.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 1, 0))
 	#undef __KERNEL__
@@ -896,14 +898,20 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 	/*---------------------------------------------------*/
 	/*         Handle IPX and Apple Talk frame          */
 	/*---------------------------------------------------*/
-	else if ((protocol == __constant_htons(ETH_P_IPX))   ||
-      		 (protocol == __constant_htons(ETH_P_ATALK)) ||
-      		 (protocol == __constant_htons(ETH_P_AARP)))
+	else if (
+		   (protocol == __constant_htons(ETH_P_IPX))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
+		|| (protocol == __constant_htons(ETH_P_ATALK))
+		|| (protocol == __constant_htons(ETH_P_AARP))
+#endif
+	)
   {
 		unsigned char ipx_header[2] = {0xFF, 0xFF};
 		struct ipxhdr	*ipx = NULL;
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
 		struct elapaarp	*ea = NULL;
 		struct ddpehdr	*ddp = NULL;
+#endif
 		unsigned char *framePtr = skb->data + ETH_HLEN;
 
 		if (protocol == __constant_htons(ETH_P_IPX))
@@ -926,8 +934,10 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 				if (*framePtr == snap_8022_type)
         {
 					unsigned char ipx_snap_id[5]  = {0x0,  0x0,  0x0,  0x81, 0x37};	/* IPX SNAP ID */
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
 					unsigned char aarp_snap_id[5] = {0x00, 0x00, 0x00, 0x80, 0xF3};	/* Apple Talk AARP SNAP ID */
 					unsigned char ddp_snap_id[5]  = {0x08, 0x00, 0x07, 0x80, 0x9B};	/* Apple Talk DDP SNAP ID */
+#endif
 
 					framePtr += 3;	/* eliminate the 802.2 header */
 
@@ -938,6 +948,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 						RTW_INFO("NAT25: Protocol=IPX (Ethernet SNAP)\n");
 						ipx = (struct ipxhdr *)framePtr;
 					}
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
           else if (!memcmp(aarp_snap_id, framePtr, 5))
           {
 						framePtr += 5;	/* eliminate the SNAP header */
@@ -950,6 +961,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 
 						ddp = (struct ddpehdr *)framePtr;
 					}
+#endif
           else
           {
 						DEBUG_WARN("NAT25: Protocol=Ethernet SNAP %02x%02x%02x%02x%02x\n",
@@ -1032,10 +1044,10 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 		}
 
 		/*   AARP  */
-		else if (ea != NULL)
-#else
-		if (ea != NULL)
+		else
 #endif
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(7, 2, 0))
+		if (ea != NULL)
     {
 			/* Sanity check fields. */
 			if (ea->hw_len != ETH_ALEN || ea->pa_len != AARP_PA_ALEN)
@@ -1103,6 +1115,9 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
   			default: return -1;
 			}
 		}
+#else
+		{}
+#endif
 		return -1;
 	}
 
