@@ -6405,17 +6405,22 @@ inline s32 rtw_cfg80211_get_last_ro_ch_passing_ms(_adapter *adapter)
 	return rtw_get_passing_time_ms(adapter->cfg80211_wdinfo.last_ro_ch_time);
 }
 
-static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
+static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0))
-	struct wireless_dev *wdev,
+	, struct wireless_dev *wdev
 #else
-	struct net_device *ndev,
+	, struct net_device *ndev
 #endif
-	struct ieee80211_channel *channel,
+	, struct ieee80211_channel *channel
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 8, 0))
-	enum nl80211_channel_type channel_type,
+	, enum nl80211_channel_type channel_type
 #endif
-	unsigned int duration, u64 *cookie)
+	, unsigned int duration
+	, u64 *cookie
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0))
+	, const u8* rx_addr
+#endif
+)
 {
 	s32 err = 0;
 	u8 remain_ch = (u8) ieee80211_frequency_to_channel(channel->center_freq);
