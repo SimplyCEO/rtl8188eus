@@ -19,6 +19,10 @@
 
 #include "hal_data.h"
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0))
+# include "linux/istring.h"
+#endif
+
 #ifdef RTW_HALMAC
 #include "../../hal/hal_halmac.h"
 #endif

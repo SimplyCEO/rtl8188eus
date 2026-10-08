@@ -17,6 +17,10 @@
 #include <drv_types.h>
 #include <hal_data.h>
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0))
+# include "linux/istring.h"
+#endif
+
 #ifdef CONFIG_IOCTL_CFG80211
 
 #ifndef DBG_RTW_CFG80211_STA_PARAM

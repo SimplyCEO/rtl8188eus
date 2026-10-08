@@ -22,6 +22,10 @@
 #include "../../hal/hal_halmac.h"
 #endif
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(7, 2, 0))
+# include "linux/istring.h"
+#endif
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 27))
 #define  iwe_stream_add_event(a, b, c, d, e)  iwe_stream_add_event(b, c, d, e)
 #define  iwe_stream_add_point(a, b, c, d, e)  iwe_stream_add_point(b, c, d, e)
